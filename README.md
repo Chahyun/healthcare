@@ -11,7 +11,7 @@
     - 운동예정에서 지정한 날짜가 지나면 미시행으로 변경 된다.
 
 - 나의 식단 정보 등록 및 수정
-  - 사용자는 주/일 별로 운동 계획을 등록하고 수정할 수 있습니다. 각 운동의 종목, 세트 횟수, 무게 등을 설정하여 개인에게 맞는 운동 계획을 수립할 수 있습니다.
+  - 사용자는 주/일 별로 운동 계획을 등록하고 수정할 수 있습니다. 각 운동의 종목, 무게 등을 설정하여 개인에게 맞는 운동 계획을 수립할 수 있습니다.
 
 - 다른 유저들의 운동 정보 조회
   - 유저들의 운동 정보를 최신 시간 순으로 리스트를 불러옵니다.(유저 정보가 비공개/정지 인 계정은 보이지 않습니다.)
@@ -39,6 +39,22 @@
 
 - 유저간의 채팅
   - 센드버드 api를 사용하여 유저간의 채팅을 할 수 있다.
+
+# ERD
+![image](https://github.com/Chahyun/healthcare/assets/48889083/3340ea7a-cb7a-4560-aa1d-e653eda79ba9)
+
+# 기술스택
+<div align=center> 
+ <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> 
+ <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
+ <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+ <img src="https://img.shields.io/badge/amazonaws-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white"> 
+ <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
+<img src="https://img.shields.io/badge/fontawesome-339AF0?style=for-the-badge&logo=fontawesome&logoColor=white">
+</div>
+ 
+ 
+ 
   
 
  
