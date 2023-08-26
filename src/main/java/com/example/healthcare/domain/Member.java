@@ -1,5 +1,6 @@
 package com.example.healthcare.domain;
 
+import com.example.healthcare.controller.request.AuthenticationRequest;
 import com.example.healthcare.domain.enumType.MemberDisclosureStatusRole;
 import com.example.healthcare.domain.enumType.MemberStatusRole;
 import com.example.healthcare.domain.enumType.MemberTypeRole;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -27,7 +29,7 @@ public class Member implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username; // 유저아이디
+    private String userId;
     private String email;
     private String password;
     private String nickname;
@@ -69,8 +71,9 @@ public class Member implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return userId;
     }
+
 
     @Override
     public boolean isAccountNonExpired() {
@@ -91,4 +94,28 @@ public class Member implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public static Member createMember(AuthenticationRequest request, String encodePassword) {
+        LocalDateTime currentTime = LocalDateTime.now();
+        return Member.builder()
+                .userId(request.getUserId())
+                .email(request.getEmail())
+                .password(encodePassword)
+                .nickname(request.getNickname())
+                .memberType(MemberTypeRole.USER)
+                .registerDt(currentTime)
+                .memberStatus(MemberStatusRole.ACTIVE)
+                .disclosureStatus(MemberDisclosureStatusRole.PUBLIC)
+                .build();
+    }
+
+    public static Member updateMember(Member member, AuthenticationRequest request, String encodePassword) {
+        LocalDateTime currentTime = LocalDateTime.now();
+        member.setEmail(request.getEmail());
+        member.setNickname(request.getNickname());
+        member.setPassword(encodePassword);
+        member.setUpdateDt(currentTime);
+        return member;
+    }
+
 }

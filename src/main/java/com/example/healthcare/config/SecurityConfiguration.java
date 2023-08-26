@@ -29,12 +29,17 @@ public class SecurityConfiguration {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .logout()
+                .logoutUrl("/api/v1/auth/logout")
+                .logoutSuccessUrl("/api/v1/")
+                .and()
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
-
     // authenticationProvider 등 필요한 다른 설정을 추가해야 함
+
+
 
 }

@@ -6,14 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
+@AllArgsConstructor
+@Builder
+public class ExerciseRequest {
+    private String sports;
+    private int weight;
+    private int cnt;
+    private int breakTime;
+    private String exerciseDate;
 
-    private String username;
-    private String email;
-    private String password;
-    private String nickname;
 
 }

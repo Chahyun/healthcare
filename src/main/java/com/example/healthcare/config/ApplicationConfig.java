@@ -9,10 +9,18 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Configuration
 @RequiredArgsConstructor
@@ -22,7 +30,7 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService(){
-        return username -> memberRepository.findByUsername(username)
+        return userId -> memberRepository.findByUserId(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
     }
 
@@ -44,4 +52,22 @@ public class ApplicationConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new SimpleUrlAuthenticationFailureHandler() {
+            @Override
+            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+                                                AuthenticationException exception)
+                    throws IOException, ServletException {
+                super.onAuthenticationFailure(request, response, exception);
+
+                String errorMessage = "Invalid username or password";
+                // 여기에서 errorMessage를 원하는 메시지로 변경할 수 있습니다.
+                request.getSession().setAttribute("errorMessage", errorMessage);
+            }
+        };
+    }
+
+
 }
