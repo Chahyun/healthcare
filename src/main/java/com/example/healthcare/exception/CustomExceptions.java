@@ -17,4 +17,8 @@ public class CustomExceptions {
     public static class ExerciseNotFoundException extends RuntimeException {
         public ExerciseNotFoundException(String message) {super(message);}
     }
+
+    public static class AccessDeniedException extends RuntimeException {
+        public AccessDeniedException(String message) {super(message);}
+    }
 }

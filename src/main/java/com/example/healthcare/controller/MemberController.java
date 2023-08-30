@@ -76,7 +76,7 @@ public class MemberController {
      * @param request 탈퇴 요청 정보
      * @return 회원 탈퇴 결과 및 응답
      */
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<String> delete(@AuthenticationPrincipal Member member,
                                          @RequestBody AuthenticationRequest request) {
         try {

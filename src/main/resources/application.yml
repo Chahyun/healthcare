@@ -14,3 +14,10 @@ spring:
   properties:
     hibernate.format_sql: true
     dialect: org.hibernate.dialect.MySQL8InnoDBDialect
+
+  main:
+    allow-bean-definition-overriding: true
+
+  redis:
+    host: localhost
+    port: 6379

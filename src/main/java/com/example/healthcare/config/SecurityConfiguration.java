@@ -23,7 +23,8 @@ public class SecurityConfiguration {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v1/auth/**").permitAll()
+                .antMatchers("/api/v1/**").permitAll()
+//                .antMatchers("/api/v1/exercise/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

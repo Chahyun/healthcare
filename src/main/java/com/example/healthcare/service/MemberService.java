@@ -211,4 +211,6 @@ public class MemberService {
         return memberRepository.findById(userId)
                 .orElseThrow(() -> new CustomExceptions.MemberNotFoundException("회원 정보가 없습니다."));
     }
+
+
 }
