@@ -28,9 +28,9 @@ public class ExerciseController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerExercise(@AuthenticationPrincipal Member member,
-                                                   @RequestBody ExerciseRequest request) {
+                                                   @RequestBody List<ExerciseRequest>  requests) {
         try {
-            exerciseService.registerExercise(member.getId(), request);
+            exerciseService.registerExercise(member.getId(), requests);
             return ResponseEntity.ok("운동 계획이 등록되었습니다.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("사용자 ID가 null입니다.");

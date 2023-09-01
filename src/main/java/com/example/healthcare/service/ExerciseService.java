@@ -16,11 +16,9 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import javax.naming.ldap.PagedResultsControl;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,15 +38,17 @@ public class ExerciseService {
      * 나의 운동 계획을 등록합니다.
      *
      * @param userId 사용자 memberID
-     * @param request 운동 계획 등록 요청 객체
+     * @param requests 운동 계획 등록 요청 객체
      */
-    public void registerExercise(Long userId, ExerciseRequest request) {
+    public void registerExercise(Long userId, List<ExerciseRequest> requests) {
         if (userId == null) {
             throw new IllegalArgumentException("사용자 ID가 null입니다.");
         }
+        for(ExerciseRequest request : requests){
+            exerciseRepository.save(Exercise.createExercise(userId, request,
+                    dateTimeParser.dateParser(request.getExerciseDate())));
+        }
         // 운동 계획을 데이터베이스에 저장합니다.
-        exerciseRepository.save(Exercise.createExercise(userId, request,
-                dateTimeParser.dateParser(request.getExerciseDate())));
     }
 
     /**
