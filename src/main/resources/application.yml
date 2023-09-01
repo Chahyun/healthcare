@@ -5,7 +5,10 @@ spring:
     username: root
     password: 11111111
 
-
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   jpa:
     open-in-view: true
     hibernate:
@@ -21,3 +24,15 @@ spring:
   redis:
     host: localhost
     port: 6379
+
+
+
+cloud:
+  aws:
+    s3:
+      bucket: healthcare-img
+    stack.auto: false
+    region.static: ap-northeast-2
+    credentials:
+      accessKey: AKIA463XOACZTJDHU5M6
+      secretKey: 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

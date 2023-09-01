@@ -9,7 +9,7 @@ import com.example.healthcare.domain.enumType.MemberDisclosureStatusRole;
 import com.example.healthcare.exception.CustomExceptions;
 import com.example.healthcare.repository.ExerciseRepository;
 import com.example.healthcare.repository.MemberRepository;
-import com.example.healthcare.util.dateTimeParser;
+import com.example.healthcare.util.DateTimeParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
@@ -46,7 +46,7 @@ public class ExerciseService {
         }
         for(ExerciseRequest request : requests){
             exerciseRepository.save(Exercise.createExercise(userId, request,
-                    dateTimeParser.dateParser(request.getExerciseDate())));
+                    DateTimeParser.dateParser(request.getExerciseDate())));
         }
         // 운동 계획을 데이터베이스에 저장합니다.
     }
@@ -142,7 +142,7 @@ public class ExerciseService {
         Exercise exercise = getExerciseById(exerciseId);
         checkExerciseOwnership(exercise, id);
         exerciseRepository.save(Exercise.updateExercise(exercise,request,
-                dateTimeParser.dateParser(request.getExerciseDate())));
+                DateTimeParser.dateParser(request.getExerciseDate())));
     }
 
 

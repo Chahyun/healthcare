@@ -21,4 +21,14 @@ public class CustomExceptions {
     public static class AccessDeniedException extends RuntimeException {
         public AccessDeniedException(String message) {super(message);}
     }
+
+    public static class FileUploadException extends RuntimeException {
+
+        public FileUploadException(String message) {
+            super(message);
+        }
+        public FileUploadException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
 }

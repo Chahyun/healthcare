@@ -1,11 +1,10 @@
 package com.example.healthcare.util;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-public class dateTimeParser {
+public class DateTimeParser {
 
     public static LocalDateTime dateParser(String date) {
         try {
