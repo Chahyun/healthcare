@@ -31,4 +31,13 @@ public class CustomExceptions {
             super(message, cause);
         }
     }
+
+    public static class DietNotFoundException extends RuntimeException {
+        public DietNotFoundException(String message) {super(message);}
+    }
+
+    public static class DataAccessException extends RuntimeException {
+        public DataAccessException(String message){super(message);} {
+        }
+    }
 }

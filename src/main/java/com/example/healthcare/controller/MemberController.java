@@ -1,10 +1,10 @@
 package com.example.healthcare.controller;
 
-import com.example.healthcare.controller.request.AuthenticationRequest;
-import com.example.healthcare.controller.request.MemberRequest;
-import com.example.healthcare.controller.response.AuthenticationResponse;
-import com.example.healthcare.controller.response.MemberResponse;
-import com.example.healthcare.domain.Member;
+import com.example.healthcare.controller.request.member.AuthenticationRequest;
+import com.example.healthcare.controller.request.member.MemberRequest;
+import com.example.healthcare.controller.response.member.AuthenticationResponse;
+import com.example.healthcare.controller.response.member.MemberResponse;
+import com.example.healthcare.domain.memeber.Member;
 import com.example.healthcare.exception.CustomExceptions;
 import com.example.healthcare.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -97,7 +97,7 @@ public class MemberController {
      * @param member 현재 인증된 회원 정보
      * @return 공개 전환 결과 및 응답
      */
-    @PostMapping("/changeDisclosure")
+    @PutMapping("/changeDisclosure")
     public ResponseEntity<String> changeDisclosure(@AuthenticationPrincipal Member member) {
         log.info(member.getUserId());
         memberService.changeDisclosure(member.getUserId());
@@ -127,7 +127,7 @@ public class MemberController {
      */
     @PutMapping("/update")
     public ResponseEntity<String> update(@AuthenticationPrincipal Member member,
-                                         @RequestBody AuthenticationRequest request) {
+                                         @RequestBody MemberRequest request) {
 
         try {
             memberService.update(member.getUserId(), request);

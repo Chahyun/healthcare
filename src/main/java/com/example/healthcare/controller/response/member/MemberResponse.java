@@ -1,8 +1,7 @@
-package com.example.healthcare.controller.response;
+package com.example.healthcare.controller.response.member;
 
-import com.example.healthcare.controller.request.AuthenticationRequest;
-import com.example.healthcare.domain.Member;
-import com.example.healthcare.domain.enumType.MemberDisclosureStatusRole;
+import com.example.healthcare.domain.memeber.Member;
+import com.example.healthcare.domain.enumType.member.MemberDisclosureStatusRole;
 
 
 import lombok.AllArgsConstructor;
@@ -25,6 +24,9 @@ public class MemberResponse {
     private MemberDisclosureStatusRole disclosureStatus;
     private LocalDateTime registerDt;
     private LocalDateTime updateDt;
+    private Double height;
+    private Double weight;
+    private Double muscleMass;
 
 
     public static MemberResponse createMemberResponse(Member member){
@@ -35,6 +37,9 @@ public class MemberResponse {
                 .disclosureStatus(member.getDisclosureStatus())
                 .registerDt(member.getRegisterDt())
                 .updateDt(member.getUpdateDt())
+                .height(member.getHeight())
+                .weight(member.getWeight())
+                .muscleMass(member.getMuscleMass())
                 .build();
 
     }

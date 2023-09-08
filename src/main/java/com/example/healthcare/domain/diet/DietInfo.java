@@ -1,29 +1,26 @@
-package com.example.healthcare.domain;
+package com.example.healthcare.domain.diet;
 
-import com.example.healthcare.controller.request.DietRequest;
+import com.example.healthcare.controller.request.diet.DietRequest;
+import com.example.healthcare.domain.enumType.diet.DietStatusRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.time.LocalDateTime;
+import javax.persistence.*;
 
-@Entity
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
-public class Diet {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
+public class DietInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
+    private Long dietId;
     private String foodName;
     private Double carbohydrate;
     private Double protein;
@@ -31,12 +28,15 @@ public class Diet {
     private Double transFat;
     private Double saturatedFat;
     private Double kcal;
-    private LocalDateTime dietDate;
+
+    @Enumerated(EnumType.STRING)
+    private DietStatusRole dietStatusRole;
+    private String dietTime;
 
 
-    public static Diet createDiet(Long userId, DietRequest request, LocalDateTime dietDate){
-        return Diet.builder()
-                .userId(userId)
+    public static DietInfo createDietInfo(Long dietId, DietRequest request){
+        return DietInfo.builder()
+                .dietId(dietId)
                 .foodName(request.getFoodName())
                 .carbohydrate(request.getCarbohydrate())
                 .protein(request.getProtein())
@@ -44,8 +44,10 @@ public class Diet {
                 .transFat(request.getTransFat())
                 .saturatedFat(request.getSaturatedFat())
                 .kcal(request.getKcal())
-                .dietDate(dietDate)
+                .dietTime(request.getDietTime())
+                .dietStatusRole(DietStatusRole.SCHEDULED_TO_BE_EAT)
                 .build();
 
     }
+
 }

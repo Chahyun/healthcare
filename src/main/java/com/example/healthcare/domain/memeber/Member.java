@@ -1,9 +1,10 @@
-package com.example.healthcare.domain;
+package com.example.healthcare.domain.memeber;
 
-import com.example.healthcare.controller.request.AuthenticationRequest;
-import com.example.healthcare.domain.enumType.MemberDisclosureStatusRole;
-import com.example.healthcare.domain.enumType.MemberStatusRole;
-import com.example.healthcare.domain.enumType.MemberTypeRole;
+import com.example.healthcare.controller.request.member.AuthenticationRequest;
+import com.example.healthcare.controller.request.member.MemberRequest;
+import com.example.healthcare.domain.enumType.member.MemberDisclosureStatusRole;
+import com.example.healthcare.domain.enumType.member.MemberStatusRole;
+import com.example.healthcare.domain.enumType.member.MemberTypeRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +12,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -46,6 +46,9 @@ public class Member implements UserDetails {
     private LocalDateTime registerDt;
     private LocalDateTime updateDt;
 
+    private Double height;
+    private Double weight;
+    private Double muscleMass;
     //이메일 유효성
     public static boolean isValidEmail(String email) {
         // 이메일 형식을 정규표현식으로 확인
@@ -106,15 +109,21 @@ public class Member implements UserDetails {
                 .registerDt(currentTime)
                 .memberStatus(MemberStatusRole.ACTIVE)
                 .disclosureStatus(MemberDisclosureStatusRole.PUBLIC)
+                .height(0.0)
+                .weight(0.0)
+                .muscleMass(0.0)
                 .build();
     }
 
-    public static Member updateMember(Member member, AuthenticationRequest request, String encodePassword) {
+    public static Member updateMember(Member member, MemberRequest request, String encodePassword) {
         LocalDateTime currentTime = LocalDateTime.now();
         member.setEmail(request.getEmail());
         member.setNickname(request.getNickname());
         member.setPassword(encodePassword);
         member.setUpdateDt(currentTime);
+        member.setHeight(request.getHeight());
+        member.setWeight(request.getWeight());
+        member.setMuscleMass(request.getMuscleMass());
         return member;
     }
 

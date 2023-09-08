@@ -1,4 +1,4 @@
-package com.example.healthcare.controller.response;
+package com.example.healthcare.controller.response.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

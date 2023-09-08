@@ -1,4 +1,4 @@
-package com.example.healthcare.controller.request;
+package com.example.healthcare.controller.request.diet;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +20,5 @@ public class DietRequest {
     private Double transFat;
     private Double saturatedFat;
     private Double kcal;
-    private String dietDate;
-
+    private String dietTime;
 }

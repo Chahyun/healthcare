@@ -1,7 +1,7 @@
-package com.example.healthcare.domain;
+package com.example.healthcare.domain.exercise;
 
-import com.example.healthcare.controller.request.ExerciseRequest;
-import com.example.healthcare.domain.enumType.ExerciseRole;
+import com.example.healthcare.controller.request.exercise.ExerciseRequest;
+import com.example.healthcare.domain.enumType.exercise.ExerciseRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +20,6 @@ public class Exercise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private Long userId;
     private String sports;
     private int weight;
@@ -32,8 +31,8 @@ public class Exercise {
     private ExerciseRole status;
 
     public static Exercise createExercise(Long userId, ExerciseRequest request, LocalDateTime exerciseDateTime){
-        return Exercise.builder().
-                userId(userId)
+        return Exercise.builder()
+                .userId(userId)
                 .sports(request.getSports())
                 .weight(request.getWeight())
                 .cnt(request.getCnt())

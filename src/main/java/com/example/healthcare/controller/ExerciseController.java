@@ -1,19 +1,17 @@
 package com.example.healthcare.controller;
 
-import com.example.healthcare.controller.request.ExerciseRequest;
-import com.example.healthcare.controller.response.ExerciseResponse;
-import com.example.healthcare.domain.Member;
+import com.example.healthcare.controller.request.exercise.ExerciseRequest;
+import com.example.healthcare.controller.response.exercise.ExerciseResponse;
+import com.example.healthcare.domain.memeber.Member;
 import com.example.healthcare.exception.CustomExceptions;
 import com.example.healthcare.service.ExerciseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +28,7 @@ public class ExerciseController {
     public ResponseEntity<String> registerExercise(@AuthenticationPrincipal Member member,
                                                    @RequestBody List<ExerciseRequest>  requests) {
         try {
+
             exerciseService.registerExercise(member.getId(), requests);
             return ResponseEntity.ok("운동 계획이 등록되었습니다.");
         } catch (IllegalArgumentException e) {
@@ -53,7 +52,7 @@ public class ExerciseController {
     @GetMapping("")
     public ResponseEntity<List<ExerciseResponse>> myExerciseForDay(
             @AuthenticationPrincipal Member member,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate selectDate) {
+            @RequestParam String selectDate) {
 
         try {
             List<ExerciseResponse> exerciseResponses = exerciseService.myExerciseForDate(member.getId(), selectDate);
@@ -81,7 +80,7 @@ public class ExerciseController {
     @GetMapping("/week")
     public ResponseEntity<List<ExerciseResponse>> myExercisesForWeek(
             @AuthenticationPrincipal Member member,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate selectDate) {
+            @RequestParam String selectDate) {
         try {
             List<ExerciseResponse> exerciseResponses = exerciseService.myExerciseForWeek(member.getId(), selectDate);
             log.info(member.getId().toString()+"의 "+selectDate+" 주 조회");
@@ -108,7 +107,7 @@ public class ExerciseController {
     @GetMapping("/month")
     public ResponseEntity<List<ExerciseResponse>> myExercisesForMonth(
             @AuthenticationPrincipal Member member,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate selectDate) {
+            @RequestParam String selectDate) {
         try {
             List<ExerciseResponse> exerciseResponses = exerciseService.myExerciseForMonth(member.getId(), selectDate);
             log.info(member.getId().toString()+"의 "+selectDate+" 월 조회");
@@ -182,17 +181,25 @@ public class ExerciseController {
 
 
     @GetMapping("/public")
-    public ResponseEntity<Map<String, List<ExerciseResponse>>> getPublicUserExercises(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate selectDate
-    ) {
+    public ResponseEntity<Map<String, List<ExerciseResponse>>> getPublicUserExercises(@RequestParam String selectDate) {
         try {
             log.info(selectDate.toString());
-            Map<String, List<ExerciseResponse>> userExercisesMap = exerciseService.getAllUserExercises(selectDate);
-            return ResponseEntity.ok(userExercisesMap);
+            return ResponseEntity.ok(exerciseService.getAllUserExercises(selectDate));
         } catch (CustomExceptions.MemberNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/my_all_exercises")
+    public ResponseEntity<List<ExerciseResponse>> getAllExercises(@AuthenticationPrincipal Member member) {
+        try {
+            return ResponseEntity.ok(exerciseService.getAllExercises(member.getId()));
+        } catch (CustomExceptions.ExerciseNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

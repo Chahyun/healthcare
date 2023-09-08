@@ -1,7 +1,7 @@
 package com.example.healthcare.schedule;
 
-import com.example.healthcare.domain.Exercise;
-import com.example.healthcare.domain.enumType.ExerciseRole;
+import com.example.healthcare.domain.exercise.Exercise;
+import com.example.healthcare.domain.enumType.exercise.ExerciseRole;
 import com.example.healthcare.repository.ExerciseRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
