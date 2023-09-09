@@ -45,7 +45,7 @@
   - 센드버드 api를 사용하여 유저간의 채팅을 할 수 있다.
 
 # ERD
-![image](https://github.com/Chahyun/healthcare/assets/48889083/6098ffcd-9d0f-4d66-9242-19ea8d3bcccc)
+![image](https://github.com/Chahyun/healthcare/assets/48889083/3e02fac6-b530-4511-b51e-0578d3705056)
 
 # 기술스택
 <div align=center> 
