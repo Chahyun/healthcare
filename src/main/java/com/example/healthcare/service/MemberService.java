@@ -9,7 +9,7 @@ import com.example.healthcare.domain.memeber.Member;
 import com.example.healthcare.domain.enumType.member.MemberDisclosureStatusRole;
 
 import com.example.healthcare.exception.CustomExceptions;
-import com.example.healthcare.repository.MemberRepository;
+import com.example.healthcare.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;

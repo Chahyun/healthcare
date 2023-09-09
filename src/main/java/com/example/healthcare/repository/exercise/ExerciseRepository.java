@@ -1,4 +1,4 @@
-package com.example.healthcare.repository;
+package com.example.healthcare.repository.exercise;
 
 import com.example.healthcare.domain.exercise.Exercise;
 import com.example.healthcare.domain.enumType.exercise.ExerciseRole;

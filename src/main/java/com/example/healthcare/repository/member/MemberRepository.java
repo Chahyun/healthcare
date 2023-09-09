@@ -1,4 +1,4 @@
-package com.example.healthcare.repository;
+package com.example.healthcare.repository.member;
 
 import com.example.healthcare.domain.memeber.Member;
 import com.example.healthcare.domain.enumType.member.MemberDisclosureStatusRole;
