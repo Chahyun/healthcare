@@ -1,4 +1,4 @@
-package com.example.healthcare.domain.enumType.member;
+package com.example.healthcare.domain.enumType;
 
 public enum MemberDisclosureStatusRole {
     PUBLIC,

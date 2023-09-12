@@ -1,4 +1,4 @@
-package com.example.healthcare.domain.enumType.exercise;
+package com.example.healthcare.domain.enumType;
 
 public enum ExerciseRole {
     COMPLETE,

@@ -1,21 +1,22 @@
 package com.example.healthcare.service;
 
-import com.example.healthcare.controller.request.exercise.ExerciseRequest;
-import com.example.healthcare.controller.response.exercise.ExerciseResponse;
-import com.example.healthcare.domain.exercise.Exercise;
-import com.example.healthcare.domain.memeber.Member;
-import com.example.healthcare.domain.enumType.exercise.ExerciseRole;
-import com.example.healthcare.domain.enumType.member.MemberDisclosureStatusRole;
+import com.example.healthcare.controller.request.ExerciseRequest;
+import com.example.healthcare.controller.response.ExerciseResponse;
+import com.example.healthcare.domain.Exercise;
+import com.example.healthcare.domain.Member;
+import com.example.healthcare.domain.enumType.ExerciseRole;
+import com.example.healthcare.domain.enumType.MemberDisclosureStatusRole;
 import com.example.healthcare.exception.CustomExceptions;
-import com.example.healthcare.repository.exercise.ExerciseRepository;
-import com.example.healthcare.repository.member.MemberRepository;
-import com.example.healthcare.util.DateTimeParser;
+import com.example.healthcare.repository.ExerciseRepository;
+import com.example.healthcare.repository.MemberRepository;
+import com.example.healthcare.util.dateTimeParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.naming.ldap.PagedResultsControl;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -39,19 +40,15 @@ public class ExerciseService {
      * 나의 운동 계획을 등록합니다.
      *
      * @param userId 사용자 memberID
-     * @param requests 운동 계획 등록 요청 객체
+     * @param request 운동 계획 등록 요청 객체
      */
-    public void registerExercise(Long userId, List<ExerciseRequest> requests) {
+    public void registerExercise(Long userId, ExerciseRequest request) {
         if (userId == null) {
             throw new IllegalArgumentException("사용자 ID가 null입니다.");
         }
-
-        for(ExerciseRequest request : requests){
-            log.info(request.getSports());
-            exerciseRepository.save(Exercise.createExercise(userId, request,
-                    DateTimeParser.dateParser(request.getExerciseDate())));
-        }
         // 운동 계획을 데이터베이스에 저장합니다.
+        exerciseRepository.save(Exercise.createExercise(userId, request,
+                dateTimeParser.dateParser(request.getExerciseDate())));
     }
 
     /**
@@ -62,11 +59,10 @@ public class ExerciseService {
      * @return 운동 데이터의 ExerciseResponse 리스트
      */
     @Cacheable(value = "exerciseCache", key = "'myExerciseForDate_' + #userId + '_' + #selectDate")
-    public List<ExerciseResponse> myExerciseForDate(Long userId, String selectDate) {
+    public List<ExerciseResponse> myExerciseForDate(Long userId, LocalDate selectDate) {
         // 선택한 날짜의 시작과 종료 일시를 계산합니다.
-        LocalDate date = LocalDate.parse(selectDate, DateTimeFormatter.ISO_DATE);
-        LocalDateTime startDate = date.atStartOfDay();
-        LocalDateTime endDate = date.atTime(23, 59, 59);
+        LocalDateTime startDate = selectDate.atStartOfDay();
+        LocalDateTime endDate = selectDate.atTime(23, 59, 59);
 
         // 계산한 일시 범위로 운동 데이터 조회를 수행합니다.
         return searchExercise(userId, startDate, endDate);
@@ -80,11 +76,10 @@ public class ExerciseService {
      * @return 운동 데이터의 ExerciseResponse 리스트
      */
     @Cacheable(value = "exerciseCache", key = "'myExerciseForWeek_' + #userId + '_' + #selectDate")
-    public List<ExerciseResponse> myExerciseForWeek(Long userId, String selectDate) {
+    public List<ExerciseResponse> myExerciseForWeek(Long userId, LocalDate selectDate) {
         // 선택한 날짜의 주의 시작과 종료 일시를 계산합니다.
-        LocalDate date = LocalDate.parse(selectDate, DateTimeFormatter.ISO_DATE);
-        LocalDate startOfWeek = date.with(DayOfWeek.MONDAY);
-        LocalDate endOfWeek = date.with(DayOfWeek.SUNDAY);
+        LocalDate startOfWeek = selectDate.with(DayOfWeek.MONDAY);
+        LocalDate endOfWeek = selectDate.with(DayOfWeek.SUNDAY);
         LocalDateTime startDate = startOfWeek.atStartOfDay();
         LocalDateTime endDate = endOfWeek.atTime(23, 59, 59);
 
@@ -100,13 +95,10 @@ public class ExerciseService {
      * @return 운동 데이터의 ExerciseResponse 리스트
      */
     @Cacheable(value = "exerciseCache", key = "'myExerciseForMonth_' + #userId + '_' + #selectDate")
-    public List<ExerciseResponse> myExerciseForMonth(Long userId, String selectDate) {
+    public List<ExerciseResponse> myExerciseForMonth(Long userId, LocalDate selectDate) {
         // 선택한 날짜의 월의 시작과 종료 일시를 계산합니다.
-        StringBuilder sb = new StringBuilder(selectDate);
-        sb.append("-01");
-        LocalDate date = LocalDate.parse(sb.toString(), DateTimeFormatter.ISO_DATE);
-        LocalDate startOfMonth = date.withDayOfMonth(1);
-        LocalDate endOfMonth = date.withDayOfMonth(date.lengthOfMonth());
+        LocalDate startOfMonth = selectDate.withDayOfMonth(1);
+        LocalDate endOfMonth = selectDate.withDayOfMonth(selectDate.lengthOfMonth());
         LocalDateTime startDate = startOfMonth.atStartOfDay();
         LocalDateTime endDate = endOfMonth.atTime(23, 59, 59);
 
@@ -150,7 +142,7 @@ public class ExerciseService {
         Exercise exercise = getExerciseById(exerciseId);
         checkExerciseOwnership(exercise, id);
         exerciseRepository.save(Exercise.updateExercise(exercise,request,
-                DateTimeParser.dateParser(request.getExerciseDate())));
+                dateTimeParser.dateParser(request.getExerciseDate())));
     }
 
 
@@ -215,7 +207,7 @@ public class ExerciseService {
     }
 
 
-    public Map<String, List<ExerciseResponse>> getAllUserExercises(String selectDate) {
+    public Map<String, List<ExerciseResponse>> getAllUserExercises(LocalDate selectDate) {
         List<Member> publicMembers = memberRepository.findAllByDisclosureStatus(MemberDisclosureStatusRole.PUBLIC);
 
         if(publicMembers.isEmpty()){
@@ -223,9 +215,8 @@ public class ExerciseService {
         }
 
         Map<String, List<ExerciseResponse>> userExercisesMap = new HashMap<>();
-        LocalDate date = LocalDate.parse(selectDate, DateTimeFormatter.ISO_DATE);
-        LocalDateTime startDate = date.atStartOfDay();
-        LocalDateTime endDate = date.atTime(23, 59, 59);
+        LocalDateTime startDate = selectDate.atStartOfDay();
+        LocalDateTime endDate = selectDate.atTime(23, 59, 59);
 
         for(Member member : publicMembers){
             log.info(member.getNickname());
@@ -238,18 +229,5 @@ public class ExerciseService {
             log.info(searchExercise(member.getId(), startDate, endDate).toString());
         }
         return userExercisesMap;
-    }
-
-    public List<ExerciseResponse> getAllExercises(Long userId) {
-        List<Exercise> exercises = exerciseRepository.findAllByUserId(userId);
-        List<ExerciseResponse> exerciseResponses = new ArrayList<>();
-        if(exercises == null){
-            throw new CustomExceptions.ExerciseNotFoundException("아직 등록하신 운동이 없습니다.");
-        }
-        for(Exercise exercise : exercises){
-            exerciseResponses.add(ExerciseResponse.createFromExercise(exercise));
-        }
-
-        return exerciseResponses;
     }
 }
