@@ -1,7 +1,7 @@
-package com.example.healthcare.repository;
+package com.example.healthcare.repository.member;
 
-import com.example.healthcare.domain.Member;
-import com.example.healthcare.domain.enumType.MemberDisclosureStatusRole;
+import com.example.healthcare.domain.memeber.Member;
+import com.example.healthcare.domain.enumType.member.MemberDisclosureStatusRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

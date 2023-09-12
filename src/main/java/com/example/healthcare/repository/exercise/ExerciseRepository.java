@@ -1,13 +1,12 @@
-package com.example.healthcare.repository;
+package com.example.healthcare.repository.exercise;
 
-import com.example.healthcare.domain.Exercise;
-import com.example.healthcare.domain.enumType.ExerciseRole;
+import com.example.healthcare.domain.exercise.Exercise;
+import com.example.healthcare.domain.enumType.exercise.ExerciseRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
@@ -15,6 +14,6 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
 
     List<Exercise> findByExerciseDateBeforeAndStatus(LocalDateTime currentTime, ExerciseRole exerciseRole);
 
-
+    List<Exercise> findAllByUserId(Long userId);
 
 }

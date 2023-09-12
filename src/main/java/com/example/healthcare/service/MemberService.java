@@ -1,16 +1,15 @@
 package com.example.healthcare.service;
 
 import com.example.healthcare.config.JwtService;
-import com.example.healthcare.controller.request.AuthenticationRequest;
-import com.example.healthcare.controller.response.AuthenticationResponse;
-import com.example.healthcare.controller.response.MemberResponse;
-import com.example.healthcare.domain.Member;
-import com.example.healthcare.domain.enumType.MemberDisclosureStatusRole;
-import com.example.healthcare.domain.enumType.MemberStatusRole;
-import com.example.healthcare.domain.enumType.MemberTypeRole;
+import com.example.healthcare.controller.request.member.AuthenticationRequest;
+import com.example.healthcare.controller.request.member.MemberRequest;
+import com.example.healthcare.controller.response.member.AuthenticationResponse;
+import com.example.healthcare.controller.response.member.MemberResponse;
+import com.example.healthcare.domain.memeber.Member;
+import com.example.healthcare.domain.enumType.member.MemberDisclosureStatusRole;
 
 import com.example.healthcare.exception.CustomExceptions;
-import com.example.healthcare.repository.MemberRepository;
+import com.example.healthcare.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -146,7 +145,7 @@ public class MemberService {
      * @param userId  업데이트 대상 회원의 아이디
      * @param request 업데이트 요청 정보
      */
-    public void update(String userId, AuthenticationRequest request) {
+    public void update(String userId, MemberRequest request) {
         log.info(userId);
         if(!Member.isValidEmail(request.getEmail())){
             throw new IllegalArgumentException("옳바른 이메일 형식이 아닙니다.");

@@ -1,7 +1,7 @@
-package com.example.healthcare.controller.response;
+package com.example.healthcare.controller.response.exercise;
 
-import com.example.healthcare.domain.Exercise;
-import com.example.healthcare.domain.enumType.ExerciseRole;
+import com.example.healthcare.domain.exercise.Exercise;
+import com.example.healthcare.domain.enumType.exercise.ExerciseRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExerciseResponse {
+    private Long id;
     private String sports;
     private int weight;
     private int cnt;
@@ -28,6 +29,7 @@ public class ExerciseResponse {
 
     public static ExerciseResponse createFromExercise(Exercise exercise) {
         return ExerciseResponse.builder()
+                .id(exercise.getId())
                 .sports(exercise.getSports())
                 .weight(exercise.getWeight())
                 .cnt(exercise.getCnt())
