@@ -1,17 +1,14 @@
 package com.example.healthcare.controller;
 
-import com.example.healthcare.controller.request.AuthenticationRequest;
-import com.example.healthcare.controller.request.MemberRequest;
-import com.example.healthcare.controller.response.AuthenticationResponse;
-import com.example.healthcare.controller.response.MemberResponse;
-import com.example.healthcare.domain.Member;
-import com.example.healthcare.exception.CustomExceptions;
+import com.example.healthcare.controller.request.member.AuthenticationRequest;
+import com.example.healthcare.controller.request.member.MemberRequest;
+import com.example.healthcare.controller.response.member.AuthenticationResponse;
+import com.example.healthcare.controller.response.member.MemberResponse;
+import com.example.healthcare.domain.memeber.Member;
 import com.example.healthcare.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -32,16 +29,15 @@ public class MemberController {
      * @param request 회원 가입 요청 정보
      * @return 회원 가입 결과 및 응답
      */
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody AuthenticationRequest request){
-        try {
-            AuthenticationResponse response = memberService.register(request);
-            return ResponseEntity.ok(response);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
-        }
+        return ResponseEntity.ok(memberService.register(request));
+    }
+
+    @GetMapping("/register")
+    public String showRegistrationForm() {
+        return "register";
     }
 
     /**
@@ -55,6 +51,10 @@ public class MemberController {
         return ResponseEntity.ok(memberService.login(request));
     }
 
+    @GetMapping("/login")
+    public String showLoginForm() {
+        return "login";
+    }
     /**
      * 로그아웃 기능
      *
@@ -79,16 +79,8 @@ public class MemberController {
     @DeleteMapping("/delete")
     public ResponseEntity<String> delete(@AuthenticationPrincipal Member member,
                                          @RequestBody AuthenticationRequest request) {
-        try {
-            memberService.delete(member.getUserId(), request);
-            return ResponseEntity.ok("회원 삭제를 완료하였습니다");
-        } catch (CustomExceptions.MemberNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (CustomExceptions.PasswordMismatchException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        memberService.delete(member.getUserId(), request);
+        return ResponseEntity.ok("회원 삭제를 완료하였습니다");
     }
 
     /**
@@ -97,7 +89,7 @@ public class MemberController {
      * @param member 현재 인증된 회원 정보
      * @return 공개 전환 결과 및 응답
      */
-    @PostMapping("/changeDisclosure")
+    @PutMapping("/changeDisclosure")
     public ResponseEntity<String> changeDisclosure(@AuthenticationPrincipal Member member) {
         log.info(member.getUserId());
         memberService.changeDisclosure(member.getUserId());
@@ -127,16 +119,9 @@ public class MemberController {
      */
     @PutMapping("/update")
     public ResponseEntity<String> update(@AuthenticationPrincipal Member member,
-                                         @RequestBody AuthenticationRequest request) {
-
-        try {
-            memberService.update(member.getUserId(), request);
-            return ResponseEntity.ok("나의 정보가 변경 되었습니다.");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 에러가 발생 하였습니다.");
-        }
+                                         @RequestBody MemberRequest request) {
+        memberService.update(member.getUserId(), request);
+        return ResponseEntity.ok("나의 정보가 변경 되었습니다.");
     }
 
 }

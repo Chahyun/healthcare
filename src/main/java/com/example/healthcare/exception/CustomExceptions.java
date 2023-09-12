@@ -21,4 +21,23 @@ public class CustomExceptions {
     public static class AccessDeniedException extends RuntimeException {
         public AccessDeniedException(String message) {super(message);}
     }
+
+    public static class FileUploadException extends RuntimeException {
+
+        public FileUploadException(String message) {
+            super(message);
+        }
+        public FileUploadException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+
+    public static class DietNotFoundException extends RuntimeException {
+        public DietNotFoundException(String message) {super(message);}
+    }
+
+    public static class DataAccessException extends RuntimeException {
+        public DataAccessException(String message){super(message);} {
+        }
+    }
 }

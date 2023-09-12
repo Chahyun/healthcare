@@ -1,7 +1,7 @@
 package com.example.healthcare.config;
 
 
-import com.example.healthcare.repository.MemberRepository;
+import com.example.healthcare.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
